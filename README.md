@@ -54,5 +54,5 @@ Alternatively if a user does not need `sudo` privileges on the VM (assuming it's
 ## Princples
 
 * [PoLP]: Principle of Least Privilege
-* [DiD]: [Defence in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)). 
+* [DiD]: [Defence in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)). Every control adds depth, but for the purpose of this guide, this principle refers to **secondary** controls, which typically have a broader scope than **primary** control, which is closer to the entity being protected.
 * [Auditing]: Assists with auditing
