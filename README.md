@@ -27,7 +27,7 @@ Use [custom IAM roles](https://cloud.google.com/iam/docs/understanding-custom-ro
 
 Note: there are thousands of individual IAM permissions. It can be difficult to manage the complexity of assigning large numbers of permissions to a custom role (e.g. managing the release of new permissions for existing and new services as well as their deprecation). Custom roles may make more sense for small, focused roles, that include only a small number of permissions.
 
-Note: custom roles [do not support all IAM permissions](https://cloud.google.com/iam/docs/understanding-custom-roles).
+Note: custom roles [do not support all IAM permissions](https://cloud.google.com/iam/docs/custom-roles-permissions-support).
 
 ## Compute Engine
 
