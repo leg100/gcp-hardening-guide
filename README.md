@@ -19,7 +19,7 @@ Bind to users and service accounts only IAM roles and permissions they need to p
 
 Apply VPC Service Controls. [TODO]
 
-In IAM policies, specify Cloud Identity groups rather than individual users; groups indicate the role of members via the group name, making auditing more straight-forward.
+In IAM policies, specify [Cloud Identity groups](https://cloud.google.com/identity/docs/concepts/groups) rather than individual users; groups indicate the role of members via the group name, making auditing more straight-forward.
 
 #### Custom Roles
 
