@@ -21,6 +21,7 @@ Apply VPC Service Controls. [TODO]
 
 ### SSH
 
+Use [OS Login](https://cloud.google.com/compute/docs/oslogin). OS Login uses IAM to manage SSH access rather than SSH keys. The distribution of SSH keys cannot be controlled (whereas of course IAM permissions can).
 Set the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Require OS Login" to `true`. [DiD]
 
 Note: this may cause GKE instances to malfunction, so set this policy to `false` on projects containing GKE clusters.
