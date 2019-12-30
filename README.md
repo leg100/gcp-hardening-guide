@@ -33,8 +33,9 @@ Note: custom roles [do not support all IAM permissions](https://cloud.google.com
 
 ### SSH
 
-Use [OS Login](https://cloud.google.com/compute/docs/oslogin). OS Login uses IAM to manage SSH access rather than SSH keys. The distribution of SSH keys cannot be controlled (whereas of course IAM permissions can).
-Set the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Require OS Login" to `true`. [DiD]
+Enable [OS Login](https://cloud.google.com/compute/docs/oslogin). OS Login uses IAM to manage SSH access to VMs, permitting access to be granted and revoked centrally. Once enabled, the default mechanism - which stores users' SSH keys in project and instance metadata - is disabled.
+
+Set the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Require OS Login" to `true`. This prevents a user from disabling OS Login by setting project or instance metadata (if they have the necessary IAM permissions to do so). [DiD]
 
 Note: this may cause GKE instances to malfunction, so set this policy to `false` on projects containing GKE clusters.
 
