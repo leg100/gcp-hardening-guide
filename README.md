@@ -7,7 +7,9 @@ This guide is targeted at those running a large complex infrastructure. You'll n
 
 ### Enablement
 
-Restrict the enablement of APIs and services using the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Define allowed APIs and services". Unfortunately, only several APIs can be restricted. [DiD]
+Restrict the enablement of APIs and services using the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Define allowed APIs and services" [DiD]
+
+Note: Unfortunately, only several APIs can be restricted.
 
 For each project, enable only those APIs and services that are needed [PoLP].
 
@@ -26,7 +28,18 @@ Set the [Organization Policy](https://cloud.google.com/resource-manager/docs/org
 
 Note: this may cause GKE instances to malfunction, so set this policy to `false` on projects containing GKE clusters.
 
-`sudo`...
+#### Prevent users from working around OS Login
+
+1. (Legitimate) User A connects to their VM: `gcloud compute ssh <vm>`. They have necessary IAM perms, so it succeeds.
+2. User A adds User B's public key to `~/.ssh/authorized_keys`.
+3. User B connects to the VM: `ssh -i <key> <vm_ip>`. It succeeds, because their key is authorized and they have direct connectivity to port 22, even though they don't have the necessary OS Login IAM permissions.
+
+To prevent this, compel users to use IAP to SSH into a VM. Configure a GCP firewall rule to block access to port 22 on the VM from anything other than the IAP IP range.
+
+Alternatively if a user does not need `sudo` privileges on the VM (assuming it's Linux), disabling the user of the authorized keys file is sufficient:
+
+1. Set `AuthorizedKeysFile none` in `/etc/ssh/sshd_config`
+2. Restart SSH daemon: `systemctl restart sshd`
 
 ## Princples
 
