@@ -52,6 +52,10 @@ Alternatively if a user does not need `sudo` privileges on the VM (assuming it's
 1. Set `AuthorizedKeysFile none` in `/etc/ssh/sshd_config`
 2. Restart SSH daemon: `systemctl restart sshd`
 
+### Disable Serial Ports
+
+Enforce the organization policy "Disable VM serial port access" at the organization level. [DiD].
+
 ## Princples
 
 * [PoLP]: Principle of Least Privilege
