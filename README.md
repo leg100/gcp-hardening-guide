@@ -77,17 +77,27 @@ Note: custom roles [do not support all IAM permissions](https://cloud.google.com
 
 ## 2. Compute Engine
 
-### 2.3. Mandate OS Login 
+### 2.1. Require OS Login [DiD]
+
+#### Description
 
 [OS Login](https://cloud.google.com/compute/docs/oslogin) uses IAM to manage SSH access to VMs, allowing access to be granted and revoked centrally. Once enabled, the default mechanism - which stores users' SSH keys in project and instance metadata - is disabled.
 
-Set the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Require OS Login" to `true`. [DiD]
+#### Control
+
+Set the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Require OS Login" to `true`.
 
 Note: this may cause GKE instances to malfunction, so set this policy to `false` on projects containing GKE clusters.
 
 OS Login can otherwise be enabled by setting [`enable-oslogin=TRUE` in project or instance metadata](https://cloud.google.com/compute/docs/instances/managing-instance-access#enable_oslogin). However, a user with the necessary IAM permissions can disable OS Login by setting `enable-oslogin=FALSE` (these permissions are included in IAM roles typically assigned to users working with compute engine resources).
 
-### 2.4. Prevent OS Login loophole (Linux)
+#### Reasoning
+
+* The distribution of SSH keys cannot be controlled; they can be leaked to outside parties.
+
+### 2.2. Prevent OS Login loophole (Linux)
+
+#### Description
 
 Prevent the following scenario:
 
@@ -95,16 +105,34 @@ Prevent the following scenario:
 2. User A adds User B's public key to `~/.ssh/authorized_keys`.
 3. User B connects to the VM: `ssh -i <key> <vm_ip>`. It succeeds, because their key is authorized and they have direct connectivity to port 22, even though they don't have the necessary OS Login IAM permissions.
 
-To prevent this, compel users to use IAP to SSH into a VM. Configure a GCP firewall rule to block access to port 22 on the VM from anything other than the IAP IP range.
+#### Control
 
-Alternatively if a user does not need `sudo` privileges on the VM, disabling the user of the authorized keys file is sufficient:
+Compel users to [create an IAP tunnel](https://cloud.google.com/iap/docs/using-tcp-forwarding) in order to SSH into a VM. Configure a GCP firewall rule to block access to port 22 on the VM from anything other than the IAP IP range (`35.235.240.0/20`).
+
+Alternatively, if a user does not need `sudo` privileges on the VM, disabling the user of the authorized keys file is sufficient:
 
 1. Set `AuthorizedKeysFile none` in `/etc/ssh/sshd_config`
 2. Restart SSH daemon: `systemctl restart sshd`
 
-### 2.5. Disable Serial Ports
+#### Reasoning
 
-Enforce the organization policy "Disable VM serial port access" at the organization level. [DiD].
+* Enabling OS Login is not enough.
+
+### 2.3. Disable Serial Ports [DiD]
+
+#### Description
+
+Disable serial ports on VMs.
+
+#### Control
+
+Enforce the organization policy "Disable VM serial port access" at the organization level.
+
+#### Reasoning
+
+* The serial port exposes sensitive information
+* The serial port can accept commands that could permit changes to made
+* GCP firewall rules do not apply to serial ports. Any client with an appropriate SSH key and trivial details of the instance (its name, project, etc) can connect to the ports.
 
 ## Principles
 
