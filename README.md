@@ -4,6 +4,23 @@ Comprehensive guidelines for hardening the security of your Google Cloud organiz
 
 This guide is targeted at those running a large complex infrastructure. You'll need a team with necessary expertise and resources to apply these guidelines.
 
+## 1. IAM
+
+### 1.1. Disable service account key creation [DiD]
+
+#### Description
+
+Disable the ability to create service account keys.
+
+#### Control
+
+Enforce the Organization Policy "Disable service account key creation" at the organization level.
+
+#### Reasoning
+
+* Keys are not non-repudiable: any actions carried out using the key cannot be associated with a given user.
+* Distribution of keys cannot be controlled: they can be leaked to outside parties.
+
 ## 1. APIs and Services
 
 ### 1.1. Restrict Enablement
