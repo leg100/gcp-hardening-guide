@@ -21,7 +21,7 @@ Apply VPC Service Controls. [TODO]
 
 In IAM policies, specify [Cloud Identity groups](https://cloud.google.com/identity/docs/concepts/groups) rather than individual users; groups indicate the role of members via the group name. [Auditing]
 
-### 1.3. Custom Roles
+### 1.3. Use Custom Roles
 
 Use [custom IAM roles](https://cloud.google.com/iam/docs/understanding-custom-roles) [PoLP]
 
