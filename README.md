@@ -21,6 +21,21 @@ Enforce the Organization Policy "Disable service account key creation" at the or
 * Keys are not non-repudiable: any actions carried out using the key cannot be associated with a given user.
 * Distribution of keys cannot be controlled: they can be leaked to outside parties.
 
+### 1.2. Specify groups in IAM policies, not users [Auditing].
+
+#### Description
+
+In IAM policies, bind permissions to [Cloud Identity groups](https://cloud.google.com/identity/docs/concepts/groups) rather than individual users
+
+#### Control
+
+N/A
+
+#### Reasoning
+
+* Directly assigning IAM permissions to users increases the overhead of managing IAM policies; when adding or removing permissions from a certain job function (e.g. web developers), changes are necessary to each and every username with that job function.
+* The name of a group can (and should) meaningfully indicate the job function of its members, e.g. `web-developers@example.com`, whereas usernames do not.
+
 ## 1. APIs and Services
 
 ### 1.1. Restrict Enablement
@@ -37,7 +52,6 @@ Bind to users and service accounts only IAM roles and permissions they need to p
 
 Apply VPC Service Controls. [TODO]
 
-In IAM policies, specify [Cloud Identity groups](https://cloud.google.com/identity/docs/concepts/groups) rather than individual users; groups indicate the role of members via the group name. [Auditing]
 
 ### 1.3. Use IAM custom roles instead of predefined roles
 
