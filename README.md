@@ -50,30 +50,6 @@ https://support.google.com/a/answer/9176657?hl=en
 
 * Passwords can be leaked and should not be relied upon alone.
 
-## 1. APIs and Services
-
-### 1.1. Restrict Enablement
-
-Restrict the enablement of APIs and services using the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Define allowed APIs and services" [DiD]
-
-Note: Unfortunately, only several APIs can be restricted.
-
-For each project, enable only those APIs and services that are needed [PoLP].
-
-### 1.2. Authorization
-
-Bind to users and service accounts only IAM roles and permissions they need to perform their job [PoLP].
-
-Apply VPC Service Controls. [TODO]
-
-
-### 1.3. Use IAM custom roles instead of predefined roles
-
-Rather than use predefined IAM roles, use [custom IAM roles](https://cloud.google.com/iam/docs/understanding-custom-roles). [PoLP].
-
-Note: there are thousands of individual IAM permissions. It can be difficult to manage the complexity of assigning large numbers of permissions to a custom role (e.g. managing the release of new permissions for existing and new services as well as their deprecation). Custom roles may make more sense for small, focused roles, that include only a small number of permissions.
-
-Note: custom roles [do not support all IAM permissions](https://cloud.google.com/iam/docs/custom-roles-permissions-support).
 
 ## 2. Compute Engine
 
@@ -133,6 +109,32 @@ Enforce the organization policy "Disable VM serial port access" at the organizat
 * The serial port exposes sensitive information
 * The serial port can accept commands that could permit changes to made
 * GCP firewall rules do not apply to serial ports. Any client with an appropriate SSH key and trivial details of the instance (its name, project, etc) can connect to the ports.
+
+## 3. APIs and Services
+
+### 3.1. Restrict API enablement [DiD]
+
+#### Description
+
+Restrict which APIs users are permitted to enable.
+
+#### Control
+
+Enforce the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Define allowed APIs and services".
+
+Note: Only several APIs can be specified.
+
+#### Reasoning
+
+* A user with appropriate IAM permissions can enable APIs on a given project. Setting the organisation policy above restricts what they are allowed to enable.
+
+### 1.3. Use IAM custom roles instead of predefined roles
+
+Rather than use predefined IAM roles, use [custom IAM roles](https://cloud.google.com/iam/docs/understanding-custom-roles). [PoLP].
+
+Note: there are thousands of individual IAM permissions. It can be difficult to manage the complexity of assigning large numbers of permissions to a custom role (e.g. managing the release of new permissions for existing and new services as well as their deprecation). Custom roles may make more sense for small, focused roles, that include only a small number of permissions.
+
+Note: custom roles [do not support all IAM permissions](https://cloud.google.com/iam/docs/custom-roles-permissions-support).
 
 ## Principles
 
