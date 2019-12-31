@@ -90,9 +90,22 @@ Alternatively, if a user does not need `sudo` privileges on the VM, disabling th
 1. Set `AuthorizedKeysFile none` in `/etc/ssh/sshd_config`
 2. Restart SSH daemon: `systemctl restart sshd`
 
+### 2.3. Remove default network
+
+#### Description
+
+Remove the network named `default` that is automatically supplied with a newly created project.
+
+#### Control
+
+For each given project:
+
+1. Create a new network
+2. Remove the network named `default`.
+
 #### Reasoning
 
-* Enabling OS Login is not enough.
+* The default network is configured with permissive firewall rules.
 
 ### 2.3. Disable Serial Ports [DiD]
 
