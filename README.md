@@ -12,14 +12,14 @@ This guide is targeted at those running a large complex infrastructure. You'll n
 
 Disable the ability to create service account keys.
 
-#### Control
-
-Enforce the Organization Policy "Disable service account key creation" at the organization level.
-
 #### Reasoning
 
 * Keys are not non-repudiable: any actions carried out using the key cannot be associated with a given user.
 * Distribution of keys cannot be controlled: they can be leaked to outside parties.
+
+#### Control
+
+Enforce the Organization Policy "Disable service account key creation" at the organization level.
 
 ### 1.2. Specify groups in IAM policies, not users [Auditing].
 
@@ -27,14 +27,14 @@ Enforce the Organization Policy "Disable service account key creation" at the or
 
 In IAM policies, bind permissions to [Cloud Identity groups](https://cloud.google.com/identity/docs/concepts/groups) rather than individual users
 
-#### Control
-
-N/A
-
 #### Reasoning
 
 * Directly assigning IAM permissions to users increases the overhead of managing IAM policies; when adding or removing permissions from a certain job function (e.g. web developers), changes are necessary to each and every username with that job function.
 * The name of a group can (and should) meaningfully indicate the job function of its members, e.g. `web-developers@example.com`, whereas usernames do not.
+
+#### Control
+
+N/A
 
 ### 1.3. Enforce 2-step verification [DiD].
 
@@ -42,14 +42,13 @@ N/A
 
 Require all users to use 2-step verification when logging into their Google accounts. They'll need to provide a piece of information in addition to their password (such as a security code from an app on their phone).
 
-#### Control
-
-https://support.google.com/a/answer/9176657?hl=en
-
 #### Reasoning
 
 * Passwords can be leaked and should not be relied upon alone.
 
+#### Control
+
+https://support.google.com/a/answer/9176657?hl=en
 
 ## 2. Compute Engine
 
@@ -59,6 +58,10 @@ https://support.google.com/a/answer/9176657?hl=en
 
 [OS Login](https://cloud.google.com/compute/docs/oslogin) uses IAM to manage SSH access to VMs, allowing access to be granted and revoked centrally. Once enabled, the default mechanism - which stores users' SSH keys in project and instance metadata - is disabled.
 
+#### Reasoning
+
+The distribution of SSH keys cannot be controlled; they can be leaked to outside parties.
+
 #### Control
 
 Set the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Require OS Login" to `true`.
@@ -66,10 +69,6 @@ Set the [Organization Policy](https://cloud.google.com/resource-manager/docs/org
 Note: this may cause GKE instances to malfunction, so set this policy to `false` on projects containing GKE clusters.
 
 OS Login can otherwise be enabled by setting [`enable-oslogin=TRUE` in project or instance metadata](https://cloud.google.com/compute/docs/instances/managing-instance-access#enable_oslogin). However, a user with the necessary IAM permissions can disable OS Login by setting `enable-oslogin=FALSE` (these permissions are included in IAM roles typically assigned to users working with compute engine resources).
-
-#### Reasoning
-
-* The distribution of SSH keys cannot be controlled; they can be leaked to outside parties.
 
 ### 2.2. Prevent OS Login loophole (Linux)
 
@@ -80,6 +79,10 @@ Prevent the following scenario:
 1. (Legitimate) User A connects to their VM: `gcloud compute ssh <vm>`. They have necessary IAM permissions, so it succeeds.
 2. User A adds User B's public key to `~/.ssh/authorized_keys`.
 3. User B connects to the VM: `ssh -i <key> <vm_ip>`. It succeeds, because their key is authorized and they have direct connectivity to port 22, even though they don't have the necessary OS Login IAM permissions.
+
+#### Reasoning
+
+A user can bypass OS Login and authenticate with SSH keys alone.
 
 #### Control
 
@@ -96,6 +99,10 @@ Alternatively, if a user does not need `sudo` privileges on the VM, disabling th
 
 Remove the network named `default` that is automatically supplied with a newly created project.
 
+#### Reasoning
+
+* The default network is configured with permissive firewall rules.
+
 #### Control
 
 For each given project:
@@ -105,25 +112,21 @@ For each given project:
 
 For Terraform, set [auto_create_network](https://www.terraform.io/docs/providers/google/r/google_project.html#auto_create_network) to `false` on the resource `google_project`.
 
-#### Reasoning
-
-* The default network is configured with permissive firewall rules.
-
 ### 2.4. Disable Serial Ports [DiD]
 
 #### Description
 
 Disable serial ports on VMs.
 
-#### Control
-
-Enforce the organization policy "Disable VM serial port access" at the organization level.
-
 #### Reasoning
 
 * The serial port exposes sensitive information
 * The serial port can accept commands that could permit changes to made
 * GCP firewall rules do not apply to serial ports. Any client with an appropriate SSH key and trivial details of the instance (its name, project, etc) can connect to the ports.
+
+#### Control
+
+Enforce the organization policy "Disable VM serial port access" at the organization level.
 
 ## 3. APIs and Services
 
@@ -133,15 +136,15 @@ Enforce the organization policy "Disable VM serial port access" at the organizat
 
 Restrict which APIs users are permitted to enable.
 
+#### Reasoning
+
+* A user with appropriate IAM permissions can enable APIs on a given project. Setting the organisation policy above restricts what they are allowed to enable.
+
 #### Control
 
 Enforce the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Define allowed APIs and services".
 
 Note: Only several APIs can be specified.
-
-#### Reasoning
-
-* A user with appropriate IAM permissions can enable APIs on a given project. Setting the organisation policy above restricts what they are allowed to enable.
 
 ### 1.3. Use IAM custom roles instead of predefined roles
 
