@@ -1,5 +1,6 @@
-# gcp-hardening-guide
-Comprehensive guidelines for hardening the security of your GCP organization.
+# GCP Hardening Guide
+
+Comprehensive guidelines for hardening the security of your Google Cloud organization.
 
 This guide is targeted at those running a large complex infrastructure. You'll need a team with necessary expertise and resources to apply these guidelines.
 
