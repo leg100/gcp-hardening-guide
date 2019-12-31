@@ -36,6 +36,20 @@ N/A
 * Directly assigning IAM permissions to users increases the overhead of managing IAM policies; when adding or removing permissions from a certain job function (e.g. web developers), changes are necessary to each and every username with that job function.
 * The name of a group can (and should) meaningfully indicate the job function of its members, e.g. `web-developers@example.com`, whereas usernames do not.
 
+### 1.3. Enforce 2-step verification [DiD].
+
+#### Description
+
+Require all users to use 2-step verification when logging into their Google accounts. They'll need to provide a piece of information in addition to their password (such as a security code from an app on their phone).
+
+#### Control
+
+https://support.google.com/a/answer/9176657?hl=en
+
+#### Reasoning
+
+* Passwords can be leaked and should not be relied upon alone.
+
 ## 1. APIs and Services
 
 ### 1.1. Restrict Enablement
