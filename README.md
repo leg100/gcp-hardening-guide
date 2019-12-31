@@ -3,9 +3,9 @@ Comprehensive guidelines for hardening the security of your GCP organization.
 
 This guide is targeted at those running a large complex infrastructure. You'll need a team with necessary expertise and resources to apply these guidelines.
 
-## APIs and Services
+## 1. APIs and Services
 
-### Enablement
+### 1.1. Restrict Enablement
 
 Restrict the enablement of APIs and services using the [Organization Policy](https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints) "Define allowed APIs and services" [DiD]
 
@@ -13,7 +13,7 @@ Note: Unfortunately, only several APIs can be restricted.
 
 For each project, enable only those APIs and services that are needed [PoLP].
 
-### Authorization
+### 1.2. Authorization
 
 Bind to users and service accounts only IAM roles and permissions they need to perform their job [PoLP].
 
@@ -21,7 +21,7 @@ Apply VPC Service Controls. [TODO]
 
 In IAM policies, specify [Cloud Identity groups](https://cloud.google.com/identity/docs/concepts/groups) rather than individual users; groups indicate the role of members via the group name. [Auditing]
 
-#### Custom Roles
+#### 1.3. Custom Roles
 
 Use [custom IAM roles](https://cloud.google.com/iam/docs/understanding-custom-roles) [PoLP]
 
