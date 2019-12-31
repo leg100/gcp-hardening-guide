@@ -107,7 +107,7 @@ For each given project:
 
 * The default network is configured with permissive firewall rules.
 
-### 2.3. Disable Serial Ports [DiD]
+### 2.4. Disable Serial Ports [DiD]
 
 #### Description
 
