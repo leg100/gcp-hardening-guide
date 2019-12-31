@@ -103,6 +103,8 @@ For each given project:
 1. Create a new network
 2. Remove the network named `default`.
 
+For Terraform, set [auto_create_network](https://www.terraform.io/docs/providers/google/r/google_project.html#auto_create_network) to `false` on the resource `google_project`.
+
 #### Reasoning
 
 * The default network is configured with permissive firewall rules.
